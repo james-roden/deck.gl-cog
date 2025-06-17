@@ -1,4 +1,4 @@
-# Maplibre COG Protocol
+# WIP
 
 Custom protocol to load Cloud Optimized GeoTIFFs (COG) in Maplibre GL JS
 
