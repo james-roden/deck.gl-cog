@@ -3,4 +3,4 @@ coverage
 dist
 
 .idea
-geomatico-maplibre-cog-protocol-*.tgz
+settings.json
