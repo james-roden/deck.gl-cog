@@ -50,5 +50,8 @@
     "typescript": "^5.5.3",
     "typescript-eslint": "^7.16.1",
     "vite": "^6.3.5"
+  },
+  "dependencies": {
+    "geotiff-tile": "^0.21.0"
   }
 }

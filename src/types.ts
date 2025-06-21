@@ -32,8 +32,11 @@ export type CogMetadata = {
   bitsPerSample?: Array<number>,
   colorMap?: Array<number>,
   artist?: string,
-  bbox?: Bbox,
+  bbox: Bbox,
+  webMercatorBbox: Bbox,
   images: Array<ImageMetadata>
+  maxOverview: number,
+  minOverview: number
 }
 
 export type ImageMetadata = {
