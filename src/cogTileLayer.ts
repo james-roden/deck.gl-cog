@@ -7,7 +7,6 @@ import { BitmapLayer } from "@deck.gl/layers";
 import { TILE_SIZE } from "./constants";
 import CogReader from "./read/cogReader";
 import { tileIndexToMercatorBbox } from "./read/math";
-import CustomRendererStore from "./render/custom/rendererStore";
 import renderPhoto from "./render/renderPhoto";
 import { Bbox, TypedArray } from "./types";
 
@@ -21,7 +20,7 @@ export class CogTileLayer extends TileLayer<ImageBitmap> {
   static layerName = "CogTileLayer";
   private cogReader: CogReader;
   readonly url: string;
-  readonly coverageBox: boolean;
+  readonly coverageBox?: boolean;
 
   constructor(props: CogTileLayerProps) {
     super(props);
@@ -33,25 +32,20 @@ export class CogTileLayer extends TileLayer<ImageBitmap> {
   async getTileData(tile: TileLoadProps): Promise<ImageBitmap> {
     const { x, y, z } = tile.index;
     try {
-      let rgba: Uint8ClampedArray;
+      let rawTile: TypedArray;
       const metadata = await this.cogReader.getMetadata();
       if (this.coverageBox && z < metadata.minOverview - 1) {
-        const coverage = this.generateCoverageTile(
+          rawTile = this.generateCoverageTile(
           x,
           y,
           z,
           metadata.webMercatorBbox,
           TILE_SIZE
         );
-        rgba = renderPhoto(coverage, metadata);
       } else {
-        const rawTile = await this.cogReader.getRawTile({ z, x, y });
-        const renderCustom = CustomRendererStore.get(this.url);
-        rgba =
-          renderCustom !== undefined
-            ? renderCustom(rawTile, metadata)
-            : renderPhoto(rawTile, metadata);
+        rawTile = await this.cogReader.getRawTile({ z, x, y });
       }
+      const rgba = renderPhoto(rawTile, metadata);
       return await createImageBitmap(new ImageData(rgba, TILE_SIZE, TILE_SIZE));
     } catch (error) {
       console.error(`Error loading COG tile ${x}/${y}/${z}:`, error);

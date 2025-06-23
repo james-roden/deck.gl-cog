@@ -1,6 +1,6 @@
 # deck.gl-cog [WIP]
 
-A Deck.gl Tile Layer for loading COGs
+A Deck.gl Tile Layer for loading Imagery COGs
 
 ## Credit
 
