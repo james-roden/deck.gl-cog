@@ -17,8 +17,6 @@ import { CogTileLayer } from "deck.gl-core/src/cogTileLayer";
 
 const COG = "https://raw.githubusercontent.com/geomatico/maplibre-cog-protocol/main/examples/data/image.tif";
 
-// const COG = "https://geodownloadssandbox.blob.core.windows.net/scratch/Val_COG.tif?sv=2023-01-03&st=2025-06-20T16%3A03%3A15Z&se=2025-06-21T16%3A03%3A15Z&sr=b&sp=r&sig=QhSfKxgPZMJbmUb%2FwfUSuAswV%2Bwbrxwq7ufhBj7jTkM%3D"
-
 const INITIAL_VIEW_STATE: MapViewState = {
   latitude: 47.65,
   longitude: 7,
@@ -46,14 +44,13 @@ const LINK_STYLE: React.CSSProperties = {
 /* global window */
 const devicePixelRatio = (typeof window !== 'undefined' && window.devicePixelRatio) || 1;
 
-function getTooltip({tile}: TileLayerPickingInfo) {
+function getTooltip({tile}: TileLayerPickingInfo<string>) {
   if (tile) {
     const {x, y, z} = tile.index;
     return `tile: x: ${x}, y: ${y}, z: ${z}`;
   }
   return null;
 }
-
 
 export default function App({
   showBorder = false,
@@ -114,7 +111,9 @@ export default function App({
       views={new MapView({repeat: true})}
       initialViewState={INITIAL_VIEW_STATE}
       controller={true}
-      getTooltip={getTooltip}
+      //@ts-expect-error. awkward typing for simple tooltip
+      getTooltip={getTooltip} 
+
     >
       <div style={COPYRIGHT_LICENSE_STYLE}>
         {'© '}
