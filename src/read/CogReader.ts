@@ -97,7 +97,6 @@ export default class CogReader {
         minOverview: Math.min(...overviews),
       };
       this.metadataCache.set(this.url, Promise.resolve(metadata));
-      console.log(metadata);
       return metadata;
     }
   }
